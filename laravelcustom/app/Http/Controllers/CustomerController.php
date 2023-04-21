@@ -44,23 +44,32 @@ class CustomerController extends Controller
     return view('customer-trash')->with($data);
    }
 
-   public function view(){
-       if(Auth::check()){
-           
-        $logname = Auth::user()->name;
-        // echo "<pre>";
-        // print_r($logname);
-        // die;
-           // return view('dashboard');
-        //display all cutomer//
-        $customer = Customer::orderBy('id', 'desc')->get();
-        $data = compact('customer','logname');
-        return view('view')->with($data);
-    }
+   public function view(Request $request){
+      if(Auth::check()){
+         $logname = Auth::user()->name;
+         
+         $search = $request['search'] ?? ""; 
+       if($search != ""){
 
-    return redirect("login")->withSuccess('not allowed to access');
+        $customers = Customer::where('name','LIKE',"%$search%")->orwhere('email','LIKE',"%$search%")->orwhere('phone','LIKE',"%$search%")->orwhere('address','LIKE',"%$search%")->get();
 
+       }else{
+
+        $customers = Customer::orderBy('id', 'desc')->paginate(5);
+
+       } 
+       // echo "<pre>";
+       // print_r($logname);
+       // die;
+          // return view('dashboard');
+       //display all cutomer//
+       $data = compact('customers','logname','search');
+       return view('view')->with($data);
    }
+
+   return redirect("login")->with('error','not allowed to access');
+
+  }
 
    public function delete($id){
 

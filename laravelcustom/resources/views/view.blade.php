@@ -18,6 +18,15 @@
                     <a class="btn btn-primary float-right ml-2" href="{{url('signout')}}"> Logout</a>
                     <a class="btn btn-warning float-right"  href="{{url('customer/trash')}}"> Move trash</a>
                 </div>
+                <div class="mb-2">
+                    <form action="" method="">
+                    <div class="form-group">
+                        <input type="text" name="search" class="form-control col-4" placeholder="search by name" value="{{$search}}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">search</button>
+                    <a href="{{url('customer/view')}}"><button type="button" class="btn btn-success">Reset</button></a>
+                  </form>
+               </div>
             </div>
         </div>
         @if ($message = Session::get('success'))
@@ -39,7 +48,7 @@
             </thead>
             <tbody>
                 <?php $n = 1; ?>
-                @foreach ($customer as $customer)
+                @foreach ($customers as $customer)
                     <tr>
                         <td>{{ $n }}</td>
                         <td>{{ $customer->name }}</td>
@@ -55,7 +64,11 @@
                     @endforeach
             </tbody>
         </table>
-       
+        <div class="row float-right">
+        @if(!$search)
+       {{$customers->links('pagination::bootstrap-5')}}
+       @endif
+      </div>     
     </div>
 </body>
 </html>

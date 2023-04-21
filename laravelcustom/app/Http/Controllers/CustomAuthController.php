@@ -47,6 +47,12 @@ class CustomAuthController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
+            'password_confirm' => 'required|same:password',
+        ],[
+            'name.required' => 'Name is required',
+            'email.required' => 'Email is required',
+            'email.email' => 'Enter valid email',
+            'email.unique' => 'Email exist_',
         ]);
             
         $data = $request->all();

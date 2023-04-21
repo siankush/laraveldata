@@ -6,10 +6,15 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
             <span class="text-danger">
+                        @if ($message = Session::get('error'))
+                        <p class="text-center">{{ $message }}</p>
+                            @endif
+                     </span>
+                <span class="text-success">
                     @if ($message = Session::get('success'))
                     <p class="text-center">{{ $message }}</p>
-                        @endif
-                 </span>
+                    @endif
+                </span>
                 <div class="card">
                     <h3 class="card-header text-center">Login</h3>
                     <div class="card-body">
