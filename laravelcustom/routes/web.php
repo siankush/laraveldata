@@ -28,6 +28,8 @@ Route::get('registration', [CustomAuthController::class, 'registration'])->name(
 Route::post('custom-registration', [CustomAuthController::class, 'customRegistration'])->name('register.custom'); 
 Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
 
+Route::group(['middleware' => ['user']], function () {
+
 Route::get('/customer/create', [CustomerController::class,'create']);
 Route::post('/customer', [CustomerController::class, 'store']);
 
@@ -42,6 +44,14 @@ Route::post('/customer/update/{id}', [CustomerController::class,'update']);
 Route::get('/customer/trash', [CustomerController::class,'trash']);
 Route::get('/customer/restore/{id}', [CustomerController::class,'restore']);
 Route::get('/customer/forcedelete/{id}', [CustomerController::class,'forcedelete']);
+});
+
+Route::group(['middleware' => ['admin']], function () {
+    Route::get('adminpage', [CustomAuthController::class,'adminpage']);
+    Route::get('/adminpage', [CustomAuthController::class, 'adminpage'])->name('admin.home');
+ });
+
+
 
 
 

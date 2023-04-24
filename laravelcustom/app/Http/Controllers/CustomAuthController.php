@@ -22,15 +22,29 @@ class CustomAuthController extends Controller
         $request->validate([
             'email' => 'required',
             'password' => 'required',
+        
         ]);
-    
+        // $request['isAdmin'] = 1;
+        // print_r($request->all());
+        // die;
+        
         $credentials = $request->only('email', 'password');
+        
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('customer/view')
-            ->withSuccess('Signed in');
+            $isadmininfo = Auth::user()->isAdmin;
+            if($isadmininfo == 1){
+
+                return redirect()->intended('customer/view')
+                ->withSuccess('Signed in');
+                
+            }else{
+                return redirect()->intended('adminpage')
+                ->withSuccess('Signed in');
+
+            }
         }
    
-        return redirect("login")->withSuccess('Login details are not valid');
+        return redirect("login")->with('error','Login details are not valid');
     }
  
  
@@ -78,6 +92,17 @@ class CustomAuthController extends Controller
         }
    
         return redirect("login")->withSuccess('are not allowed to access');
+    }
+
+    public function adminpage(){
+
+        if(Auth::check()){
+
+            return view('adminpage');
+        }
+
+        return redirect("login")->with('error','are not allowed to access');
+  
     }
      
  
